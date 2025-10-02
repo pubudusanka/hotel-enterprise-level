@@ -37,4 +37,17 @@ public class HotelController {
                 HttpStatus.OK
         );
     }
+
+    @GetMapping("/visitor/find-all")
+    public ResponseEntity<StandardResponseDto> findAllHotels(
+            @RequestParam String searchText,
+            @RequestParam int page,
+            @RequestParam int size) throws SQLException{
+        return new ResponseEntity<>(
+                new StandardResponseDto(
+                        200, "List of the Hotels!", hotelService.findHotels(page,size,searchText)
+                ),
+                HttpStatus.OK
+        );
+    }
 }
