@@ -6,6 +6,7 @@ import lombok.*;
 import java.math.BigDecimal;
 import java.sql.Blob;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Table(name = "hotel")
@@ -41,4 +42,7 @@ public class Hotel {
 
     @Column(name = "starting_from")
     private BigDecimal startingFrom;
+
+    @OneToMany(mappedBy = "hotel", cascade = CascadeType.ALL)
+    private List<Branch> branches;
 }

@@ -32,4 +32,8 @@ public class Address {
 
     @Column(name = "latitude", nullable = false)
     private BigDecimal latitude;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "branch_id")
+    private Branch branch;
 }
