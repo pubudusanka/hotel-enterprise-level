@@ -20,13 +20,13 @@ public class Hotel {
     @GeneratedValue(strategy = GenerationType.UUID)
     private String hotelId;
 
-    @Column(name = "hotel_name")
+    @Column(name = "hotel_name", nullable = false, length = 150)
     private String hotelName;
 
-    @Column(name = "star_rating")
+    @Column(name = "star_rating", nullable = false)
     private int starRating;
 
-    @Column(name = "description")
+    @Column(name = "description", nullable = false)
     @Lob
     private Blob description;
 
