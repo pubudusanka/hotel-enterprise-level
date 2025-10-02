@@ -1,6 +1,5 @@
 package com.hotel_management.hotel_management_service_api.entity;
 
-import com.hotel_management.hotel_management_service_api.util.FileFormatter;
 import jakarta.persistence.*;
 import lombok.*;
 
