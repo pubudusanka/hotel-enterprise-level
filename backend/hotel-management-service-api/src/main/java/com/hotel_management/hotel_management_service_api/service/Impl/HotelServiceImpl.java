@@ -118,7 +118,7 @@ public class HotelServiceImpl implements HotelService {
                         .roomCount(branch.getRoomCount())
                         .branchType(branch.getBranchType())
                         .hotelId(branch.getHotel().getHotelId())
-                        .addressId(branch.getAddress().getAddressId())
+//                        .addressId(branch.getAddress().getAddressId())
                         .rooms(
                                 branch.getRooms().stream().map(room -> {
                                     try {
