@@ -6,10 +6,12 @@ import com.hotel_management.hotel_management_service_api.dto.response.ResponseHo
 import com.hotel_management.hotel_management_service_api.dto.response.pagination.ResponseHotelPaginationDto;
 import com.hotel_management.hotel_management_service_api.entity.Branch;
 import com.hotel_management.hotel_management_service_api.entity.Hotel;
+import com.hotel_management.hotel_management_service_api.exception.EntryNotFoundException;
 import com.hotel_management.hotel_management_service_api.repository.HotelRepository;
 import com.hotel_management.hotel_management_service_api.service.HotelService;
 import com.hotel_management.hotel_management_service_api.util.ByteCodeHandler;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.sql.SQLException;
@@ -38,13 +40,27 @@ public class HotelServiceImpl implements HotelService {
     }
 
     @Override
-    public ResponseHotelDto findByHotelId(String hotelId) {
-        return null;
+    public ResponseHotelDto findByHotelId(String hotelId) throws SQLException {
+        Hotel selectedHotel = hotelRepository.findById(hotelId).orElseThrow(
+                () -> new EntryNotFoundException("Hotel not found with id: " + hotelId));
+        return toResponseHotelDto(selectedHotel);
     }
 
     @Override
     public ResponseHotelPaginationDto findHotels(int page, int size, String searchText) {
-        return null;
+        return ResponseHotelPaginationDto.builder()
+                .dataCount(hotelRepository.countSearchHotels(searchText))
+                .dataList(
+                        hotelRepository.searchAllHotels(searchText, PageRequest.of(page,size))
+                                .stream().map(hotel -> {
+                                    try {
+                                        return toResponseHotelDto(hotel);
+                                    } catch (SQLException e) {
+                                        throw new RuntimeException(e);
+                                    }
+                                }).toList()
+                )
+                .build();
     }
 
     //dto mapped to the entity

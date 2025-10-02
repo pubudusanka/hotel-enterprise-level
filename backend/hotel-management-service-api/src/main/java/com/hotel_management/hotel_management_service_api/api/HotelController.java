@@ -6,10 +6,7 @@ import com.hotel_management.hotel_management_service_api.util.StandardResponseDt
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.sql.SQLException;
 
@@ -25,9 +22,19 @@ public class HotelController {
         hotelService.createHotel(data);
         return new ResponseEntity<>(
                 new StandardResponseDto(
-                        201, "Hotel Saved Successfully!", null
+                        201, "Hotel Saved Successfully!", data
                 ),
                 HttpStatus.CREATED
+        );
+    }
+
+    @GetMapping("/visitor/find-by-id/{id}")
+    public ResponseEntity<StandardResponseDto> findHotelById(@PathVariable("id") String hotelId) throws SQLException {
+        return new ResponseEntity<>(
+                new StandardResponseDto(
+                        200, "Hotel Found!", hotelService.findByHotelId(hotelId)
+                ),
+                HttpStatus.OK
         );
     }
 }

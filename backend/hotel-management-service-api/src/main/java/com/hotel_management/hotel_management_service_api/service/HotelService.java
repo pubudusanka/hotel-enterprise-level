@@ -11,6 +11,6 @@ public interface HotelService {
     public void createHotel(RequestHotelDto dto) throws SQLException;
     public void updateHotel(RequestHotelDto dto, String hotelId);
     public void deleteHotel(String hotelId);
-    public ResponseHotelDto findByHotelId(String hotelId);
+    public ResponseHotelDto findByHotelId(String hotelId) throws SQLException;
     public ResponseHotelPaginationDto findHotels(int page, int size, String searchText);
 }
