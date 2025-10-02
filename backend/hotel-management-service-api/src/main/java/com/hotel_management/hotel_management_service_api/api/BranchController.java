@@ -1,15 +1,13 @@
 package com.hotel_management.hotel_management_service_api.api;
 
 import com.hotel_management.hotel_management_service_api.dto.request.RequestBranchDto;
+import com.hotel_management.hotel_management_service_api.dto.request.RequestHotelDto;
 import com.hotel_management.hotel_management_service_api.service.BranchService;
 import com.hotel_management.hotel_management_service_api.util.StandardResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.sql.SQLException;
 
@@ -28,6 +26,30 @@ public class BranchController {
                         201, "Branch Creation Successfully!", null
                 ),
                 HttpStatus.CREATED
+        );
+    }
+
+    @PostMapping("/admin/update/{id}")
+    public ResponseEntity<StandardResponseDto> updateBranch(
+            @PathVariable("id") String branchId,
+            @RequestBody RequestBranchDto data) throws SQLException {
+        branchService.updateBranch(data, branchId);
+        return new ResponseEntity<>(
+                new StandardResponseDto(
+                        201, "Branch updated successfully", null
+                ),
+                HttpStatus.CREATED
+        );
+    }
+
+    @PostMapping("/host/delete/{id}")
+    public ResponseEntity<StandardResponseDto> deleteBranch(@PathVariable("id") String branchId) {
+        branchService.deleteBranch(branchId);
+        return new ResponseEntity<>(
+                new StandardResponseDto(
+                        204, "Branch Deleted Successfully!", null
+                ),
+                HttpStatus.NO_CONTENT
         );
     }
 }
