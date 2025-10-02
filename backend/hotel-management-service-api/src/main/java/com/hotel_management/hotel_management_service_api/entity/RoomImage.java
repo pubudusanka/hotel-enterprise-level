@@ -19,5 +19,5 @@ public class RoomImage {
 
     @Embedded
     private FileFormatter fileFormatter;
-    
+
 }
