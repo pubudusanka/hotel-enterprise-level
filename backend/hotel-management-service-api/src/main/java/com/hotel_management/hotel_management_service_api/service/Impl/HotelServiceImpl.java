@@ -30,13 +30,22 @@ public class HotelServiceImpl implements HotelService {
     }
 
     @Override
-    public void updateHotel(RequestHotelDto dto, String hotelId) {
-
+    public void updateHotel(RequestHotelDto dto, String hotelId) throws SQLException {
+        Hotel selectedHotel = hotelRepository.findById(hotelId).orElseThrow(
+                () -> new EntryNotFoundException("Hotel not found with id: " + hotelId));
+        selectedHotel.setHotelName(dto.getHotelName());
+        selectedHotel.setDescription(byteCodeHandler.stringToBlob(dto.getDescription()));
+        selectedHotel.setStarRating(dto.getStarRating());
+        selectedHotel.setStartingFrom(dto.getStartingFrom());
+        selectedHotel.setUpdatedAt(LocalDateTime.now());
+        hotelRepository.save(selectedHotel);
     }
 
     @Override
     public void deleteHotel(String hotelId) {
-
+        Hotel selectedHotel = hotelRepository.findById(hotelId).orElseThrow(
+                () -> new EntryNotFoundException("Hotel not found with id: " + hotelId));
+        hotelRepository.delete(selectedHotel);
     }
 
     @Override

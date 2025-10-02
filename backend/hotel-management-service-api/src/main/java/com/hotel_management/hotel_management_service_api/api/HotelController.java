@@ -50,4 +50,28 @@ public class HotelController {
                 HttpStatus.OK
         );
     }
+
+    @PostMapping("/host/delete/{id}")
+    public ResponseEntity<StandardResponseDto> deleteHotel(@PathVariable("id") String hotelId) {
+        hotelService.deleteHotel(hotelId);
+        return new ResponseEntity<>(
+                new StandardResponseDto(
+                        204, "Hotel Deleted Successfully!", null
+                ),
+                HttpStatus.NO_CONTENT
+        );
+    }
+
+    @PostMapping("/admin/update/{id}")
+    public ResponseEntity<StandardResponseDto> updateHotel(
+            @PathVariable("id") String hotelId,
+            @RequestBody RequestHotelDto data) throws SQLException {
+        hotelService.updateHotel(data, hotelId);
+        return new ResponseEntity<>(
+                new StandardResponseDto(
+                        201, "Hotel updated successfully", null
+                ),
+                HttpStatus.CREATED
+        );
+    }
 }
