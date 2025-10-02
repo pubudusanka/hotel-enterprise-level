@@ -1,11 +1,9 @@
 package com.hotel_management.hotel_management_service_api.service.Impl;
 
 import com.hotel_management.hotel_management_service_api.dto.request.RequestHotelDto;
-import com.hotel_management.hotel_management_service_api.dto.response.ResponseBranchDto;
-import com.hotel_management.hotel_management_service_api.dto.response.ResponseHotelDto;
+import com.hotel_management.hotel_management_service_api.dto.response.*;
 import com.hotel_management.hotel_management_service_api.dto.response.pagination.ResponseHotelPaginationDto;
-import com.hotel_management.hotel_management_service_api.entity.Branch;
-import com.hotel_management.hotel_management_service_api.entity.Hotel;
+import com.hotel_management.hotel_management_service_api.entity.*;
 import com.hotel_management.hotel_management_service_api.exception.EntryNotFoundException;
 import com.hotel_management.hotel_management_service_api.repository.HotelRepository;
 import com.hotel_management.hotel_management_service_api.service.HotelService;
@@ -16,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import java.sql.SQLException;
 import java.time.LocalDateTime;
+import java.util.Arrays;
 
 @Service
 @RequiredArgsConstructor
@@ -119,6 +118,72 @@ public class HotelServiceImpl implements HotelService {
                         .roomCount(branch.getRoomCount())
                         .branchType(branch.getBranchType())
                         .hotelId(branch.getHotel().getHotelId())
+                        .addressId(branch.getAddress().getAddressId())
+                        .rooms(
+                                branch.getRooms().stream().map(room -> {
+                                    try {
+                                        return toResponseRoomDto(room);
+                                    } catch (SQLException e) {
+                                        throw new RuntimeException(e);
+                                    }
+                                } ).toList()
+                        )
                         .build();
     }
+
+    // rooms
+    private ResponseRoomDto toResponseRoomDto(Room room) throws SQLException {
+        return room == null ? null :
+                ResponseRoomDto.builder()
+                        .roomId(room.getRoomId())
+                        .bedCount(room.getBedCount())
+                        .isAvailable(room.isAvailable())
+                        .price(room.getPrice())
+                        .roomNumber(room.getRoomNumber())
+                        .roomType(room.getRoomType())
+                        .branchId(room.getBranch().getBranchId())
+                        .facilities(
+                                room.getFacilities().stream().map(facility -> {
+                                    try {
+                                        return toResponseFacilityDto(facility);
+                                    } catch (SQLException e) {
+                                        throw new RuntimeException(e);
+                                    }
+                                }).toList()
+                        )
+                        .images(
+                                room.getRoomImages().stream().map(roomImage -> {
+                                    try {
+                                        return toResponseRoomImageDto(roomImage);
+                                    } catch (SQLException e) {
+                                        throw new RuntimeException(e);
+                                    }
+                                }).toList()
+                        )
+                        .build();
+    }
+
+    // facility
+    private ResponseFacilityDto toResponseFacilityDto(Facility facility) throws SQLException {
+        return facility == null ? null :
+                ResponseFacilityDto.builder()
+                        .facilityId(facility.getFacilityId())
+                        .facilityName(facility.getFacilityName())
+                        .roomId(facility.getRoom().getRoomId())
+                        .build();
+    }
+
+    // room image
+    private ResponseRoomImageDto toResponseRoomImageDto(RoomImage roomImage) throws SQLException {
+        return roomImage == null ? null :
+                ResponseRoomImageDto.builder()
+                        .roomImageId(roomImage.getRoomImageId())
+                        .directory(Arrays.toString(roomImage.getFileFormatter().getDirectory()))
+                        .fileName(Arrays.toString(roomImage.getFileFormatter().getFileName()))
+                        .hashCode(Arrays.toString(roomImage.getFileFormatter().getHash()))
+                        .resourceUrl(Arrays.toString(roomImage.getFileFormatter().getResourceUrl()))
+                        .roomId(roomImage.getRoom().getRoomId())
+                        .build();
+    }
+    
 }
