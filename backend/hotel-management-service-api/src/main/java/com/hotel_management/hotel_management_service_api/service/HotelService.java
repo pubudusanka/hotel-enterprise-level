@@ -1,0 +1,14 @@
+package com.hotel_management.hotel_management_service_api.service;
+
+import com.hotel_management.hotel_management_service_api.dto.request.RequestHotelDto;
+import com.hotel_management.hotel_management_service_api.dto.response.ResponseHotelDto;
+import com.hotel_management.hotel_management_service_api.dto.response.pagination.ResponseHotelPaginationDto;
+
+public interface HotelService {
+
+    public void createHotel(RequestHotelDto dto);
+    public void updateHotel(RequestHotelDto dto, String hotelId);
+    public void deleteHotel(String hotelId);
+    public ResponseHotelDto findByHotelId(String hotelId);
+    public ResponseHotelPaginationDto findHotels(int page, int size, String searchText);
+}
