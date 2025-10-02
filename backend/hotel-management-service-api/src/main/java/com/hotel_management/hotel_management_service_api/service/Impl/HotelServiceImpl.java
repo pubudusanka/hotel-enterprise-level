@@ -185,5 +185,5 @@ public class HotelServiceImpl implements HotelService {
                         .roomId(roomImage.getRoom().getRoomId())
                         .build();
     }
-    
+
 }
