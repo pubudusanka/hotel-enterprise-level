@@ -14,4 +14,10 @@ public interface BranchRepository extends JpaRepository<Branch, String> {
 
     @Query(value = "SELECT COUNT(*) FROM branch WHERE branch_name LIKE CONCAT('%', :searchText, '%')", nativeQuery = true)
     public long countSearchBranches(@Param("searchText") String searchText);
+
+    @Query(value = "SELECT * FROM branch WHERE hotel_id LIKE CONCAT('%', :hotelId, '%')", nativeQuery = true)
+    public Page<Branch> findBranchByHotelId(@Param("hotelId") String hotelId, Pageable pageable);
+
+    @Query(value = "SELECT COUNT(*) FROM branch WHERE hotel_id LIKE CONCAT('%', :hotelId, '%')", nativeQuery = true)
+    public long countSearchBranchesByHotelId(@Param("hotelId") String hotelId);
 }
