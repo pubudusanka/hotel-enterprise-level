@@ -26,13 +26,22 @@ public class BranchServiceImpl implements BranchService {
     }
 
     @Override
-    public void updateBranch(RequestBranchDto data, String branchId) {
-
+    public void updateBranch(RequestBranchDto data, String branchId) throws SQLException {
+        Branch selectedBranch = branchRepository.findById(branchId).orElseThrow(
+                () -> new RuntimeException("Branch not found by id: " + branchId)
+        );
+        selectedBranch.setBranchName(data.getBranchName());
+        selectedBranch.setBranchType(data.getBranchType());
+        selectedBranch.setRoomCount(data.getRoomCount());
+        selectedBranch.setHotel(findHotelById(data.getHotelId()));
     }
 
     @Override
     public void deleteBranch(String branchId) {
-
+        Branch selectedBranch = branchRepository.findById(branchId).orElseThrow(
+                () -> new RuntimeException("Branch not found by id: " + branchId)
+        );
+        branchRepository.delete(selectedBranch);
     }
 
     @Override
@@ -64,5 +73,18 @@ public class BranchServiceImpl implements BranchService {
     //find hotel related to the branch
     private Hotel findHotelById(String hotelId) throws SQLException {
         return hotelRepository.findById(hotelId).orElse(null);
+    }
+
+    // branch entity to response
+    private ResponseBranchDto toResponseBranchDto(Branch branch) {
+        return branch == null ? null :
+                ResponseBranchDto.builder()
+                        .branchId(branch.getBranchId())
+                        .branchName(branch.getBranchName())
+                        .branchType(branch.getBranchType())
+                        .roomCount(branch.getRoomCount())
+                        .hotelId(branch.getHotel().getHotelId())
+                        .addressId(branch.getAddress().getAddressId())
+                        .build();
     }
 }
