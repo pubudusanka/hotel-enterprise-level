@@ -42,7 +42,7 @@ public class HotelController {
     public ResponseEntity<StandardResponseDto> findAllHotels(
             @RequestParam String searchText,
             @RequestParam int page,
-            @RequestParam int size) throws SQLException{
+            @RequestParam int size){
         return new ResponseEntity<>(
                 new StandardResponseDto(
                         200, "List of the Hotels!", hotelService.findHotels(page,size,searchText)
