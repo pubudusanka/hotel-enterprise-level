@@ -118,6 +118,7 @@ public class HotelServiceImpl implements HotelService {
                         .branchName(branch.getBranchName())
                         .roomCount(branch.getRoomCount())
                         .branchType(branch.getBranchType())
+                        .hotelId(branch.getHotel().getHotelId())
                         .build();
     }
 }

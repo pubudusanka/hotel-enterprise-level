@@ -14,4 +14,5 @@ public interface HotelRepository extends JpaRepository<Hotel, String> {
 
     @Query(value = "SELECT COUNT(*) FROM hotel WHERE hotel_name LIKE CONCAT('%', :searchText, '%') AND active_status=true", nativeQuery = true)
     public long countSearchHotels(@Param("searchText") String searchText);
+
 }
