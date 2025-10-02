@@ -6,6 +6,7 @@ import com.hotel_management.hotel_management_service_api.dto.response.ResponseHo
 import com.hotel_management.hotel_management_service_api.dto.response.pagination.ResponseHotelPaginationDto;
 import com.hotel_management.hotel_management_service_api.entity.Branch;
 import com.hotel_management.hotel_management_service_api.entity.Hotel;
+import com.hotel_management.hotel_management_service_api.repository.HotelRepository;
 import com.hotel_management.hotel_management_service_api.service.HotelService;
 import com.hotel_management.hotel_management_service_api.util.ByteCodeHandler;
 import lombok.RequiredArgsConstructor;
@@ -19,10 +20,11 @@ import java.time.LocalDateTime;
 public class HotelServiceImpl implements HotelService {
 
     private final ByteCodeHandler byteCodeHandler;
+    private final HotelRepository hotelRepository;
 
     @Override
-    public void createHotel(RequestHotelDto dto) {
-
+    public void createHotel(RequestHotelDto dto) throws SQLException {
+        hotelRepository.save(toHotel(dto));
     }
 
     @Override
