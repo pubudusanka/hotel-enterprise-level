@@ -8,6 +8,7 @@
         <option value="$PROJECT_DIR$/backend/hotel-management-service-eureka-server/hotel-management-service-eureka-server/pom.xml" />
         <option value="$PROJECT_DIR$/backend/hotel-management-service-eureka-server/pom.xml" />
         <option value="$PROJECT_DIR$/backend/hotel-management-service-gateway/pom.xml" />
+        <option value="$PROJECT_DIR$/backend/hotel-management-service-auth-service/pom.xml" />
       </list>
     </option>
   </component>
