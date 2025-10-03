@@ -1,15 +1,12 @@
 package com.hotel_management.hotel_management_service_api.api;
 
 import com.hotel_management.hotel_management_service_api.dto.request.RequestAddressDto;
-import com.hotel_management.hotel_management_service_api.dto.request.RequestBranchDto;
 import com.hotel_management.hotel_management_service_api.service.AddressService;
 import com.hotel_management.hotel_management_service_api.util.StandardResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.sql.SQLException;
 
 @RestController
 @RequestMapping("/hotel-service/api/v1/address")
@@ -19,7 +16,7 @@ public class AddressController {
     private final AddressService addressService;
 
     @PostMapping("/user/create")
-    public ResponseEntity<StandardResponseDto> createAddress(@RequestBody RequestAddressDto addressDto) throws SQLException {
+    public ResponseEntity<StandardResponseDto> createAddress(@RequestBody RequestAddressDto addressDto) {
         addressService.createAddress(addressDto);
         return new ResponseEntity<>(
                 new StandardResponseDto(
@@ -32,7 +29,7 @@ public class AddressController {
     @PostMapping("/admin/update/{id}")
     public ResponseEntity<StandardResponseDto> updateAddress(
             @PathVariable("id") String addressId,
-            @RequestBody RequestAddressDto data) throws SQLException {
+            @RequestBody RequestAddressDto data) {
         addressService.updateAddress(data, addressId);
         return new ResponseEntity<>(
                 new StandardResponseDto(
@@ -54,7 +51,7 @@ public class AddressController {
     }
 
     @GetMapping("/visitor/find-by-id/{id}")
-    public ResponseEntity<StandardResponseDto> findAddressById(@PathVariable("id") String addressId) throws SQLException {
+    public ResponseEntity<StandardResponseDto> findAddressById(@PathVariable("id") String addressId) {
         return new ResponseEntity<>(
                 new StandardResponseDto(
                         200, "Address Found!", addressService.findById(addressId)
@@ -64,7 +61,7 @@ public class AddressController {
     }
 
     @GetMapping("/host/find-by-branch-id/{id}")
-    public ResponseEntity<StandardResponseDto> findAddressByBranchId(@PathVariable("id") String branchId) throws SQLException {
+    public ResponseEntity<StandardResponseDto> findAddressByBranchId(@PathVariable("id") String branchId) {
         return new ResponseEntity<>(
                 new StandardResponseDto(
                         200, "Address Found!", addressService.findByBranchId(branchId)
