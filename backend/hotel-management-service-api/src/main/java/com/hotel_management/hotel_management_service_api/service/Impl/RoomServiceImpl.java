@@ -40,7 +40,7 @@ public class RoomServiceImpl implements RoomService {
         selectedRoom.setRoomType(data.getRoomType());
         selectedRoom.setBedCount(data.getBedCount());
         selectedRoom.setPrice(data.getPrice());
-        selectedRoom.setAvailable(data.isAvailable());
+        selectedRoom.setAvailable(data.getIsAvailable());
         selectedRoom.setBranch(findBranchById(data.getBranchId()));
         roomRepository.save(selectedRoom);
     }
@@ -106,7 +106,7 @@ public class RoomServiceImpl implements RoomService {
                         .roomType(data.getRoomType())
                         .bedCount(data.getBedCount())
                         .price(data.getPrice())
-                        .isAvailable(data.isAvailable())
+                        .isAvailable(data.getIsAvailable())
                         .branch(findBranchById(data.getBranchId()))
                         .build();
     }

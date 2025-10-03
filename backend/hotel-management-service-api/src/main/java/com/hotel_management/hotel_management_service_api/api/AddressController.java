@@ -60,7 +60,7 @@ public class AddressController {
         );
     }
 
-    @GetMapping("/host/find-by-branch-id/{id}")
+    @GetMapping("/visitor/find-by-branch-id/{id}")
     public ResponseEntity<StandardResponseDto> findAddressByBranchId(@PathVariable("id") String branchId) {
         return new ResponseEntity<>(
                 new StandardResponseDto(

@@ -14,7 +14,7 @@ import java.math.BigDecimal;
 public class RequestRoomDto {
 
     private int bedCount;
-    private boolean isAvailable;
+    private Boolean isAvailable;
     private BigDecimal price;
     private String roomNumber;
     private String roomType;
