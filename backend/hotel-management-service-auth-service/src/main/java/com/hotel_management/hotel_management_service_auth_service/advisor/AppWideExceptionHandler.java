@@ -12,7 +12,7 @@ public class AppWideExceptionHandler {
     @ExceptionHandler(BadRequestException.class)
     public ResponseEntity<StandardResponseDto> handleBadRequestException(BadRequestException exception){
         return new ResponseEntity<>(
-                new StandardResponseDto(409, exception.getMessage(), exception),
+                new StandardResponseDto(400, exception.getMessage(), exception),
                 HttpStatus.BAD_REQUEST
         );
     }
