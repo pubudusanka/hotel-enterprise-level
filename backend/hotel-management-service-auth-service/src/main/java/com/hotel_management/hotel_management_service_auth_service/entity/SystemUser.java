@@ -20,7 +20,7 @@ public class SystemUser {
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "user_id", nullable = false)
     private String userId;
-    
+
     @Column(name = "keycloak_id", nullable = false)
     private String keycloakId;
 
@@ -50,4 +50,7 @@ public class SystemUser {
     private Instant createdAt;
     @Column(name = "updated_at")
     private Instant updatedAt;
+
+    @OneToOne(mappedBy = "systemUser", cascade = CascadeType.ALL)
+    private Otp otp;
 }
