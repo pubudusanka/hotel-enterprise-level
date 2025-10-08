@@ -8,14 +8,19 @@ import com.hotel_management.hotel_management_service_auth_service.exception.BadR
 import com.hotel_management.hotel_management_service_auth_service.repository.OtpRepository;
 import com.hotel_management.hotel_management_service_auth_service.repository.SystemUserRepository;
 import com.hotel_management.hotel_management_service_auth_service.service.SystemUserService;
+import com.hotel_management.hotel_management_service_auth_service.util.OtpGenerator;
 import com.sun.jdi.request.DuplicateRequestException;
+import jakarta.ws.rs.core.Response;
 import lombok.RequiredArgsConstructor;
 import org.keycloak.admin.client.Keycloak;
+import org.keycloak.representations.idm.CredentialRepresentation;
+import org.keycloak.representations.idm.RoleRepresentation;
 import org.keycloak.representations.idm.UserRepresentation;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
+import java.time.Instant;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -27,9 +32,13 @@ public class SystemUserServiceImpl implements SystemUserService {
     private final SystemUserRepository systemUserRepository;
     private final KeycloakSecurityUtil keycloakSecurityUtil;
     private final OtpRepository otpRepository;
+    private final OtpGenerator otpGenerator;
 
     @Override
     public void createSystemUser(SystemUserRequest data) {
+
+        // find the user into the keycloak db and system db
+
         if (data.getFirstName()==null || data.getFirstName().trim().isEmpty()) {
             throw new BadRequestException("First name is required");
         }
@@ -72,6 +81,76 @@ public class SystemUserServiceImpl implements SystemUserService {
             }
         }
 
+        //=================end of the function===============
+
+        UserRepresentation userRepresentation = mapUserRepo(data);
+        // send data to keycloak server
+        Response response = keycloak.realm(realm).users().create(userRepresentation);
+        if (response.getStatus() == Response.Status.CREATED.getStatusCode()) {
+            // attach roles
+            RoleRepresentation userRole = keycloak.realm(realm).roles().get("user").toRepresentation();
+            userId = response.getLocation().getPath().replaceAll(".*/([^/]+)$", "$1");
+            keycloak.realm(realm).users().get(userId).roles().realmLevel().add(Arrays.asList(userRole));
+
+            //created final user caught
+            UserRepresentation createdUser = keycloak.realm(realm).users().get(userId).toRepresentation();
+
+            // save to systemuser db
+            SystemUser systemUser = SystemUser.builder()
+                    .userId(userId)
+                    .keycloakId(createdUser.getId())
+                    .firstName(data.getFirstName())
+                    .lastName(data.getLastName())
+                    .email(data.getEmail())
+                    .contactNo(data.getContact())
+                    .isActive(false)
+                    .isAccountNonExpired(true)
+                    .isAccountNonLocked(true)
+                    .isCredentialsNonExpired(true)
+                    .isEnabled(false)
+                    .isEmailVerified(false)
+                    .createdAt(Instant.now())
+                    .updatedAt(Instant.now())
+                    .build();
+
+            SystemUser savedUser = systemUserRepository.save(systemUser);
+
+            // generate otp
+            Otp createdOtp = Otp.builder()
+                    .code(otpGenerator.generateOtp(5))
+                    .createdAt(Instant.now())
+                    .updatedAt(Instant.now())
+                    .isVerified(false)
+                    .attempts(0)
+                    .build();
+
+            otpRepository.save(createdOtp);
+
+            //send otp to the email
+        }
 
     }
+
+    // create user to keycloak
+    private UserRepresentation mapUserRepo(SystemUserRequest data){
+        UserRepresentation user = new UserRepresentation();
+        user.setEmail(data.getEmail());
+        user.setFirstName(data.getFirstName());
+        user.setLastName(data.getLastName());
+        user.setUsername(data.getEmail());
+
+        user.setEnabled(false);
+        user.setEmailVerified(false);
+
+        List<CredentialRepresentation> credentialList = new ArrayList<>();
+        CredentialRepresentation credential = new CredentialRepresentation();
+        credential.setTemporary(false);
+        credential.setValue(data.getPassword());
+        credentialList.add(credential);
+        user.setCredentials(credentialList);
+
+        return user;
+    }
+
+
 }
