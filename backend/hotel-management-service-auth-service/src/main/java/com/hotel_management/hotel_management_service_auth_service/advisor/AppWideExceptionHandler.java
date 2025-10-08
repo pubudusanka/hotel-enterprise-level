@@ -1,6 +1,7 @@
 package com.hotel_management.hotel_management_service_auth_service.advisor;
 
 import com.hotel_management.hotel_management_service_auth_service.exception.BadRequestException;
+import com.hotel_management.hotel_management_service_auth_service.exception.DuplicateEntryException;
 import com.hotel_management.hotel_management_service_auth_service.util.StandardResponseDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +15,14 @@ public class AppWideExceptionHandler {
         return new ResponseEntity<>(
                 new StandardResponseDto(400, exception.getMessage(), exception),
                 HttpStatus.BAD_REQUEST
+        );
+    }
+
+    @ExceptionHandler(DuplicateEntryException.class)
+    public ResponseEntity<StandardResponseDto> handleDuplicateException(DuplicateEntryException exception){
+        return new ResponseEntity<>(
+                new StandardResponseDto(409, exception.getMessage(), exception),
+                HttpStatus.CONFLICT
         );
     }
 }
