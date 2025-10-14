@@ -3,9 +3,10 @@ package com.hotel_management.hotel_management_service_auth_service.service;
 import com.hotel_management.hotel_management_service_auth_service.dto.request.SystemUserRequest;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public interface SystemUserService {
 
     public void createSystemUser(SystemUserRequest data);
-    public void initializeHost(ArrayList<SystemUserRequest> users);
+    public void initializeHost(List<SystemUserRequest> users);
 }

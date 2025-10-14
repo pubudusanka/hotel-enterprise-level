@@ -160,7 +160,7 @@ public class SystemUserServiceImpl implements SystemUserService {
 
 
     @Override
-    public void initializeHost(ArrayList<SystemUserRequest> users) {
+    public void initializeHost(List<SystemUserRequest> users) {
         for (SystemUserRequest data : users) {
             Optional<SystemUser> selectedUser = systemUserRepository.findByEmail(data.getEmail());
 
@@ -235,7 +235,7 @@ public class SystemUserServiceImpl implements SystemUserService {
                 SystemUser savedUser = systemUserRepository.save(systemUser);
 
 
-                //send otp to the email
+                //send password to the email
                 emailService.sendHostPassword(data.getEmail(), "Access System by using above Password", data.getFirstName(),
                         data.getPassword());
             }
