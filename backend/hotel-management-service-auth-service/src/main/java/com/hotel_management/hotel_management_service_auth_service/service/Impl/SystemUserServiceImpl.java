@@ -1,6 +1,7 @@
 package com.hotel_management.hotel_management_service_auth_service.service.Impl;
 
 import com.hotel_management.hotel_management_service_auth_service.config.KeycloakSecurityUtil;
+import com.hotel_management.hotel_management_service_auth_service.dto.request.PasswordRequest;
 import com.hotel_management.hotel_management_service_auth_service.dto.request.SystemUserRequest;
 import com.hotel_management.hotel_management_service_auth_service.entity.Otp;
 import com.hotel_management.hotel_management_service_auth_service.entity.SystemUser;
@@ -16,6 +17,7 @@ import com.sun.jdi.request.DuplicateRequestException;
 import jakarta.ws.rs.core.Response;
 import lombok.RequiredArgsConstructor;
 import org.keycloak.admin.client.Keycloak;
+import org.keycloak.admin.client.resource.UserResource;
 import org.keycloak.representations.idm.CredentialRepresentation;
 import org.keycloak.representations.idm.RoleRepresentation;
 import org.keycloak.representations.idm.UserRepresentation;
@@ -350,6 +352,38 @@ public class SystemUserServiceImpl implements SystemUserService {
         }catch (Exception e){
             throw new RuntimeException(e.getMessage());
         }
+    }
+
+    @Override
+    public boolean passwordReset(PasswordRequest data) {
+        try{
+            Optional<SystemUser> selectedUser = systemUserRepository.findByEmail(data.getEmail());
+            if (selectedUser.isPresent()){
+                SystemUser systemUser = selectedUser.get();
+                Otp otpObject = systemUser.getOtp();
+                Keycloak keycloak = keycloakSecurityUtil.getKeycloakInstance();
+                List<UserRepresentation> keycloakUsers = keycloak.realm(realm).users().search(systemUser.getEmail());
+
+                if (!keycloakUsers.isEmpty() && otpObject.getCode().equals(data.getCode())){
+                    UserRepresentation keycloakUser = keycloakUsers.getFirst();
+                    UserResource userResource = keycloak.realm(realm).users().get(keycloakUser.getId());
+                    CredentialRepresentation newPassword = new CredentialRepresentation();
+                    newPassword.setType(CredentialRepresentation.PASSWORD);
+                    newPassword.setValue(data.getPassword());
+                    newPassword.setTemporary(false);
+                    userResource.resetPassword(newPassword);
+
+                    systemUser.setUpdatedAt(Instant.now());
+                    systemUserRepository.save(systemUser);
+
+                    return true;
+                }
+                throw new BadRequestException("Try again!");
+            }
+        }catch (Exception e){
+            throw new EntryNotFoundException("Unable to find any users associated with this email");
+        }
+        return false;
     }
 
 
