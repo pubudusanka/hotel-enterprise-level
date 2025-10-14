@@ -7,6 +7,7 @@ import com.hotel_management.hotel_management_service_auth_service.entity.SystemU
 import com.hotel_management.hotel_management_service_auth_service.exception.BadRequestException;
 import com.hotel_management.hotel_management_service_auth_service.repository.OtpRepository;
 import com.hotel_management.hotel_management_service_auth_service.repository.SystemUserRepository;
+import com.hotel_management.hotel_management_service_auth_service.service.EmailService;
 import com.hotel_management.hotel_management_service_auth_service.service.SystemUserService;
 import com.hotel_management.hotel_management_service_auth_service.util.OtpGenerator;
 import com.sun.jdi.request.DuplicateRequestException;
@@ -33,6 +34,7 @@ public class SystemUserServiceImpl implements SystemUserService {
     private final KeycloakSecurityUtil keycloakSecurityUtil;
     private final OtpRepository otpRepository;
     private final OtpGenerator otpGenerator;
+    private final EmailService emailService;
 
     @Override
     public void createSystemUser(SystemUserRequest data) {
@@ -127,6 +129,9 @@ public class SystemUserServiceImpl implements SystemUserService {
             otpRepository.save(createdOtp);
 
             //send otp to the email
+            emailService.sendUserSignUpVerificationCode(data.getEmail(),"Verify your Email", data.getFirstName(),
+                    createdOtp.getCode());
+
         }
 
     }
