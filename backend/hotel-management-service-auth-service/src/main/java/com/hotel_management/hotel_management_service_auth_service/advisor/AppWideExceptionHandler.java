@@ -3,6 +3,7 @@ package com.hotel_management.hotel_management_service_auth_service.advisor;
 import com.hotel_management.hotel_management_service_auth_service.exception.BadRequestException;
 import com.hotel_management.hotel_management_service_auth_service.exception.DuplicateEntryException;
 import com.hotel_management.hotel_management_service_auth_service.exception.EntryNotFoundException;
+import com.hotel_management.hotel_management_service_auth_service.exception.UnauthorizedException;
 import com.hotel_management.hotel_management_service_auth_service.util.StandardResponseDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -32,6 +33,14 @@ public class AppWideExceptionHandler {
         return new ResponseEntity<>(
                 new StandardResponseDto(404, exception.getMessage(), exception),
                 HttpStatus.NOT_FOUND
+        );
+    }
+
+    @ExceptionHandler(UnauthorizedException.class)
+    public ResponseEntity<StandardResponseDto> handleUnauthorizedException(UnauthorizedException exception){
+        return new ResponseEntity<>(
+                new StandardResponseDto(401, exception.getMessage(), exception),
+                HttpStatus.UNAUTHORIZED
         );
     }
 }

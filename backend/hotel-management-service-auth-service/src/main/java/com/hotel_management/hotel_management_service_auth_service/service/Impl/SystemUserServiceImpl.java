@@ -1,6 +1,7 @@
 package com.hotel_management.hotel_management_service_auth_service.service.Impl;
 
 import com.hotel_management.hotel_management_service_auth_service.config.KeycloakSecurityUtil;
+import com.hotel_management.hotel_management_service_auth_service.dto.request.LoginRequest;
 import com.hotel_management.hotel_management_service_auth_service.dto.request.PasswordRequest;
 import com.hotel_management.hotel_management_service_auth_service.dto.request.SystemUserRequest;
 import com.hotel_management.hotel_management_service_auth_service.entity.Otp;
@@ -8,6 +9,7 @@ import com.hotel_management.hotel_management_service_auth_service.entity.SystemU
 import com.hotel_management.hotel_management_service_auth_service.exception.BadRequestException;
 import com.hotel_management.hotel_management_service_auth_service.exception.DuplicateEntryException;
 import com.hotel_management.hotel_management_service_auth_service.exception.EntryNotFoundException;
+import com.hotel_management.hotel_management_service_auth_service.exception.UnauthorizedException;
 import com.hotel_management.hotel_management_service_auth_service.repository.OtpRepository;
 import com.hotel_management.hotel_management_service_auth_service.repository.SystemUserRepository;
 import com.hotel_management.hotel_management_service_auth_service.service.EmailService;
@@ -16,13 +18,20 @@ import com.hotel_management.hotel_management_service_auth_service.util.OtpGenera
 import com.sun.jdi.request.DuplicateRequestException;
 import jakarta.ws.rs.core.Response;
 import lombok.RequiredArgsConstructor;
+import org.keycloak.OAuth2Constants;
 import org.keycloak.admin.client.Keycloak;
 import org.keycloak.admin.client.resource.UserResource;
 import org.keycloak.representations.idm.CredentialRepresentation;
 import org.keycloak.representations.idm.RoleRepresentation;
 import org.keycloak.representations.idm.UserRepresentation;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
+import org.springframework.web.client.RestTemplate;
 
 import java.time.Instant;
 import java.util.*;
@@ -438,6 +447,34 @@ public class SystemUserServiceImpl implements SystemUserService {
 
         }
         return false;
+    }
+
+    @Override
+    public Object userLogin(LoginRequest data) {
+        Optional<SystemUser> selectedUser = systemUserRepository.findByEmail(data.getEmail());
+
+        if (selectedUser.isEmpty()){
+            throw new EntryNotFoundException("Unable to find any users associated with this email");
+        }
+
+        SystemUser systemUser = selectedUser.get();
+        if (!systemUser.getIsEmailVerified()){
+            resend(data.getEmail(),"SIGNUP");
+            throw new UnauthorizedException("Please Verify your email");
+        }
+
+        MultiValueMap<String,String> requestBody = new LinkedMultiValueMap<>();
+        requestBody.add("client_id", "");
+        requestBody.add("grant_type", OAuth2Constants.PASSWORD);
+        requestBody.add("username", data.getEmail());
+        requestBody.add("client_secret", "");
+        requestBody.add("password", data.getPassword());
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+        RestTemplate restTemplate = new RestTemplate();
+        ResponseEntity<Object> response = restTemplate.postForEntity("keycloak api url", requestBody, Object.class);
+        return response.getBody();
     }
 
 
