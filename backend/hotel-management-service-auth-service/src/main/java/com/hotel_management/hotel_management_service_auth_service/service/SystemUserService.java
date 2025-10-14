@@ -9,4 +9,5 @@ public interface SystemUserService {
 
     public void createSystemUser(SystemUserRequest data);
     public void initializeHost(List<SystemUserRequest> users);
+    public void resend (String email, String type);
 }

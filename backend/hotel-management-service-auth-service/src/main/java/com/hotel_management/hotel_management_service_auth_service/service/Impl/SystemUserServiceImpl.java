@@ -5,6 +5,8 @@ import com.hotel_management.hotel_management_service_auth_service.dto.request.Sy
 import com.hotel_management.hotel_management_service_auth_service.entity.Otp;
 import com.hotel_management.hotel_management_service_auth_service.entity.SystemUser;
 import com.hotel_management.hotel_management_service_auth_service.exception.BadRequestException;
+import com.hotel_management.hotel_management_service_auth_service.exception.DuplicateEntryException;
+import com.hotel_management.hotel_management_service_auth_service.exception.EntryNotFoundException;
 import com.hotel_management.hotel_management_service_auth_service.repository.OtpRepository;
 import com.hotel_management.hotel_management_service_auth_service.repository.SystemUserRepository;
 import com.hotel_management.hotel_management_service_auth_service.service.EmailService;
@@ -239,6 +241,41 @@ public class SystemUserServiceImpl implements SystemUserService {
                 emailService.sendHostPassword(data.getEmail(), "Access System by using above Password", data.getFirstName(),
                         data.getPassword());
             }
+        }
+    }
+
+    @Override
+    public void resend(String email, String type) {
+        try{
+            Optional<SystemUser> selectedUser = systemUserRepository.findByEmail(email);
+            if (selectedUser.isEmpty()){
+                throw new EntryNotFoundException("Unable to find any users associated with this email");
+            }
+
+            SystemUser systemUser = selectedUser.get();
+
+            if (type.equalsIgnoreCase("SIGNUP")){
+
+                if (systemUser.getIsEmailVerified()){
+                    throw new DuplicateEntryException("Email already activated!");
+                }
+            }
+
+            Otp selectedOtp = systemUser.getOtp();
+
+                String code = otpGenerator.generateOtp(5);
+
+                emailService.sendUserSignUpVerificationCode(systemUser.getEmail(),"Verify your Email", code,
+                        systemUser.getFirstName());
+
+                selectedOtp.setAttempts(0);
+                selectedOtp.setCode(code);
+                selectedOtp.setIsVerified(false);
+                selectedOtp.setUpdatedAt(Instant.now());
+                otpRepository.save(selectedOtp);
+
+        }catch (Exception e){
+            throw new RuntimeException(e.getMessage());
         }
     }
 
