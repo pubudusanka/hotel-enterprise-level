@@ -85,7 +85,7 @@ public class SystemUserServiceImpl implements SystemUserService {
 
         //=================end of the function===============
 
-        UserRepresentation userRepresentation = mapUserRepo(data);
+        UserRepresentation userRepresentation = mapUserRepo(data, false,false);
         // send data to keycloak server
         Response response = keycloak.realm(realm).users().create(userRepresentation);
         if (response.getStatus() == Response.Status.CREATED.getStatusCode()) {
@@ -136,16 +136,17 @@ public class SystemUserServiceImpl implements SystemUserService {
 
     }
 
+
     // create user to keycloak
-    private UserRepresentation mapUserRepo(SystemUserRequest data){
+    private UserRepresentation mapUserRepo(SystemUserRequest data, boolean isEmailVerified, boolean isEnabled){
         UserRepresentation user = new UserRepresentation();
         user.setEmail(data.getEmail());
         user.setFirstName(data.getFirstName());
         user.setLastName(data.getLastName());
         user.setUsername(data.getEmail());
 
-        user.setEnabled(false);
-        user.setEmailVerified(false);
+        user.setEnabled(isEnabled);
+        user.setEmailVerified(isEmailVerified);
 
         List<CredentialRepresentation> credentialList = new ArrayList<>();
         CredentialRepresentation credential = new CredentialRepresentation();
@@ -155,6 +156,90 @@ public class SystemUserServiceImpl implements SystemUserService {
         user.setCredentials(credentialList);
 
         return user;
+    }
+
+
+    @Override
+    public void initializeHost(ArrayList<SystemUserRequest> users) {
+        for (SystemUserRequest data : users) {
+            Optional<SystemUser> selectedUser = systemUserRepository.findByEmail(data.getEmail());
+
+            if (selectedUser.isPresent()) {
+                continue;
+            }
+
+            String userId="";
+            String otp="";
+            Keycloak keycloak = null;
+
+            UserRepresentation existingUser = null;
+            keycloak = keycloakSecurityUtil.getKeycloakInstance();
+
+            existingUser = keycloak.realm(realm).users().search(data.getEmail()).stream()
+                    .findFirst().orElse(null);
+
+            if (existingUser != null) {
+                Optional<SystemUser> selectedSystemUserFromAuthService =
+                        systemUserRepository.findByEmail(existingUser.getEmail());
+
+                if (selectedSystemUserFromAuthService.isEmpty()) {
+                    keycloak.realm(realm).users().delete(existingUser.getId());
+                }else{
+                    throw new DuplicateRequestException("Email already exists!");
+                }
+            }else{
+                Optional<SystemUser> selectedSystemUserFromAuthService =
+                        systemUserRepository.findByEmail(data.getEmail());
+
+                if (selectedSystemUserFromAuthService.isPresent()) {
+                    Optional<Otp> selectedOtp = otpRepository.findBySystemUserId(selectedSystemUserFromAuthService.get().getUserId());
+                    if (selectedOtp.isPresent()) {
+                        otpRepository.deleteById(selectedOtp.get().getPropertyId());
+                    }
+                    systemUserRepository.deleteById(selectedSystemUserFromAuthService.get().getUserId());
+                }
+            }
+
+            //=================end of the function===============
+
+            UserRepresentation userRepresentation = mapUserRepo(data, true, true);
+            // send data to keycloak server
+            Response response = keycloak.realm(realm).users().create(userRepresentation);
+            if (response.getStatus() == Response.Status.CREATED.getStatusCode()) {
+                // attach roles
+                RoleRepresentation userRole = keycloak.realm(realm).roles().get("host").toRepresentation();
+                userId = response.getLocation().getPath().replaceAll(".*/([^/]+)$", "$1");
+                keycloak.realm(realm).users().get(userId).roles().realmLevel().add(Arrays.asList(userRole));
+
+                //created final user caught
+                UserRepresentation createdUser = keycloak.realm(realm).users().get(userId).toRepresentation();
+
+                // save to systemuser db
+                SystemUser systemUser = SystemUser.builder()
+                        .userId(userId)
+                        .keycloakId(createdUser.getId())
+                        .firstName(data.getFirstName())
+                        .lastName(data.getLastName())
+                        .email(data.getEmail())
+                        .contactNo(data.getContact())
+                        .isActive(true)
+                        .isAccountNonExpired(true)
+                        .isAccountNonLocked(true)
+                        .isCredentialsNonExpired(true)
+                        .isEnabled(true)
+                        .isEmailVerified(true)
+                        .createdAt(Instant.now())
+                        .updatedAt(Instant.now())
+                        .build();
+
+                SystemUser savedUser = systemUserRepository.save(systemUser);
+
+
+                //send otp to the email
+                emailService.sendHostPassword(data.getEmail(), "Access System by using above Password", data.getFirstName(),
+                        data.getPassword());
+            }
+        }
     }
 
 
