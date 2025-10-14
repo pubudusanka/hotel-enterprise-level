@@ -279,5 +279,41 @@ public class SystemUserServiceImpl implements SystemUserService {
         }
     }
 
+    @Override
+    public void forgotPasswordSendVerificationCode(String email) {
+        try{
+            Optional<SystemUser> selectedUser = systemUserRepository.findByEmail(email);
+            if (selectedUser.isEmpty()){
+                throw new EntryNotFoundException("Unable to find any users associated with this email");
+            }
+
+            SystemUser systemUser = selectedUser.get();
+
+            Keycloak keycloak = null;
+            keycloak =keycloakSecurityUtil.getKeycloakInstance();
+            UserRepresentation existingUser = keycloak.realm(realm).users().search(email).stream().findFirst().orElse(null);
+
+            if (existingUser == null) {
+                throw new EntryNotFoundException("Unable to find any users associated with this email");
+            }
+
+            Otp selectedOtp = systemUser.getOtp();
+
+            String code = otpGenerator.generateOtp(5);
+            
+            selectedOtp.setAttempts(0);
+            selectedOtp.setCode(code);
+            selectedOtp.setIsVerified(false);
+            selectedOtp.setUpdatedAt(Instant.now());
+            otpRepository.save(selectedOtp);
+
+            emailService.sendUserSignUpVerificationCode(systemUser.getEmail(),"Verify your Email to Reset the Password", code,
+                    systemUser.getFirstName());
+
+        }catch (Exception e){
+            throw new RuntimeException(e.getMessage());
+        }
+    }
+
 
 }
