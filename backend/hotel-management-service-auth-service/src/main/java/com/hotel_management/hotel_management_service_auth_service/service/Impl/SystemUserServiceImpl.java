@@ -300,7 +300,7 @@ public class SystemUserServiceImpl implements SystemUserService {
             Otp selectedOtp = systemUser.getOtp();
 
             String code = otpGenerator.generateOtp(5);
-            
+
             selectedOtp.setAttempts(0);
             selectedOtp.setCode(code);
             selectedOtp.setIsVerified(false);
@@ -309,6 +309,39 @@ public class SystemUserServiceImpl implements SystemUserService {
 
             emailService.sendUserSignUpVerificationCode(systemUser.getEmail(),"Verify your Email to Reset the Password", code,
                     systemUser.getFirstName());
+
+        }catch (Exception e){
+            throw new RuntimeException(e.getMessage());
+        }
+    }
+
+    @Override
+    public boolean verifyReset(String otp, String email) {
+        try{
+            Optional<SystemUser> selectedUser = systemUserRepository.findByEmail(email);
+            if (selectedUser.isEmpty()){
+                throw new EntryNotFoundException("Unable to find any users associated with this email");
+            }
+
+            SystemUser systemUserObj = selectedUser.get();
+            Otp otpObject = systemUserObj.getOtp();
+
+            if (otpObject.getCode().equals(otp)){
+                otpRepository.deleteById(otpObject.getPropertyId());
+                return true;
+
+            }else{
+
+                if (otpObject.getAttempts() >= 5){
+                    resend(email, "PASSWORD");
+                    throw new BadRequestException("You have a new verification code");
+                }
+
+                otpObject.setAttempts(otpObject.getAttempts()+1);
+                otpObject.setUpdatedAt(Instant.now());
+                otpRepository.save(otpObject);
+                return false;
+            }
 
         }catch (Exception e){
             throw new RuntimeException(e.getMessage());

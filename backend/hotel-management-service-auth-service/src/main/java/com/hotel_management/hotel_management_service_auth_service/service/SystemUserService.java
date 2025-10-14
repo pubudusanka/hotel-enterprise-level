@@ -11,4 +11,5 @@ public interface SystemUserService {
     public void initializeHost(List<SystemUserRequest> users);
     public void resend (String email, String type);
     public void forgotPasswordSendVerificationCode(String email);
+    public boolean verifyReset(String otp,String email);
 }
