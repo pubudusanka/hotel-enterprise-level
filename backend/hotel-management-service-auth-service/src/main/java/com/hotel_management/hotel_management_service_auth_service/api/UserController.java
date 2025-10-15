@@ -7,10 +7,7 @@ import com.hotel_management.hotel_management_service_auth_service.util.StandardR
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 
 @RestController
@@ -29,6 +26,17 @@ public class UserController {
                         201, "User Account was Created!", null
                 ),
                 HttpStatus.CREATED
+        );
+    }
+
+    @PostMapping("/visitors/resend")
+    public ResponseEntity<StandardResponseDto> resend(@RequestParam String email, @RequestParam String type){
+        systemUserService.resend(email, type);
+        return new ResponseEntity<>(
+                new StandardResponseDto(
+                        200, "Please check your Email!", null
+                ),
+                HttpStatus.OK
         );
     }
 }
