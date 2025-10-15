@@ -4,7 +4,6 @@ import com.hotel_management.hotel_management_service_auth_service.dto.request.Lo
 import com.hotel_management.hotel_management_service_auth_service.dto.request.PasswordRequest;
 import com.hotel_management.hotel_management_service_auth_service.dto.request.SystemUserRequest;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public interface SystemUserService {
