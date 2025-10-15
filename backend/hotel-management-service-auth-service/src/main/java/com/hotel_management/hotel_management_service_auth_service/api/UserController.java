@@ -1,6 +1,7 @@
 package com.hotel_management.hotel_management_service_auth_service.api;
 
 import com.hotel_management.hotel_management_service_auth_service.config.JwtService;
+import com.hotel_management.hotel_management_service_auth_service.dto.request.LoginRequest;
 import com.hotel_management.hotel_management_service_auth_service.dto.request.PasswordRequest;
 import com.hotel_management.hotel_management_service_auth_service.dto.request.SystemUserRequest;
 import com.hotel_management.hotel_management_service_auth_service.service.SystemUserService;
@@ -75,4 +76,29 @@ public class UserController {
                 isChanged?HttpStatus.OK:HttpStatus.BAD_REQUEST
         );
     }
+
+    @PostMapping("/visitors/verify-email")
+    public ResponseEntity<StandardResponseDto> verifyEmail(@RequestParam String email, @RequestParam String otp){
+        boolean isVerified = systemUserService.verifyEmail(otp, email);
+
+        return new ResponseEntity<>(
+                new StandardResponseDto(
+                        isVerified?200:400, isVerified?"Verified!":"Try again!", isVerified
+                ),
+                isVerified?HttpStatus.OK:HttpStatus.BAD_REQUEST
+        );
+    }
+
+    @PostMapping("/visitors/login")
+    public ResponseEntity<StandardResponseDto> login(@RequestBody LoginRequest data){
+
+        return new ResponseEntity<>(
+                new StandardResponseDto(
+                        200, "Success!", systemUserService.userLogin(data)
+                ),
+                HttpStatus.OK
+        );
+    }
+
+
 }
