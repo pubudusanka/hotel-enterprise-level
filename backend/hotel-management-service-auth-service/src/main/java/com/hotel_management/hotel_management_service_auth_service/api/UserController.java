@@ -1,6 +1,7 @@
 package com.hotel_management.hotel_management_service_auth_service.api;
 
 import com.hotel_management.hotel_management_service_auth_service.config.JwtService;
+import com.hotel_management.hotel_management_service_auth_service.dto.request.PasswordRequest;
 import com.hotel_management.hotel_management_service_auth_service.dto.request.SystemUserRequest;
 import com.hotel_management.hotel_management_service_auth_service.service.SystemUserService;
 import com.hotel_management.hotel_management_service_auth_service.util.StandardResponseDto;
@@ -60,6 +61,18 @@ public class UserController {
                         isVerified?200:400, isVerified?"Verified!":"Try again!", isVerified
                 ),
                 isVerified?HttpStatus.OK:HttpStatus.BAD_REQUEST
+        );
+    }
+
+    @PostMapping("/visitors/reset-password")
+    public ResponseEntity<StandardResponseDto> resetPassword(@RequestBody PasswordRequest data){
+        boolean isChanged = systemUserService.passwordReset(data);
+
+        return new ResponseEntity<>(
+                new StandardResponseDto(
+                        isChanged?201:400, isChanged?"Password Changed!":"Try again!", isChanged
+                ),
+                isChanged?HttpStatus.OK:HttpStatus.BAD_REQUEST
         );
     }
 }
