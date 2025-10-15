@@ -50,4 +50,16 @@ public class UserController {
                 HttpStatus.OK
         );
     }
+
+    @PostMapping("/visitors/verify-reset")
+    public ResponseEntity<StandardResponseDto> verifyReset(@RequestParam String email, @RequestParam String otp){
+        boolean isVerified = systemUserService.verifyReset(otp, email);
+
+        return new ResponseEntity<>(
+                new StandardResponseDto(
+                        isVerified?200:400, isVerified?"Verified!":"Try again!", isVerified
+                ),
+                isVerified?HttpStatus.OK:HttpStatus.BAD_REQUEST
+        );
+    }
 }
