@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=BBH+Sans+Bogle&display=swap');
+
 .main-outer{
   width: 100%;
   height: auto;
@@ -22,4 +24,17 @@
   color: var(--light-color);
   border-radius: 50px;
   padding: 5px 12px;
+}
+
+.logo{
+  font-family: "BBH Sans Bogle", sans-serif;
+  font-style: normal;
+  color: var(--light-color);
+  font-size: 50px;
+}
+
+@media only screen and (max-width: 400px) {
+  .login-text{
+    display: none;
+  }
 }
