@@ -1,12 +1,29 @@
-//.outer{
-//  background-color: var(--background-color);
-//}
-
-.button-row{
+.option{
   display: flex;
-  border: 1px solid red;
+  align-items: center;
+  border-radius: 50px;
+  margin-right: 20px;
+  border-color: white;
+  padding: 5px 20px;
 }
 
-.button-text{
-  color: white;
+.option:hover{
+  background-color: var(--light-color);
+  color:var(--background-color);
+  font-weight: bold;
 }
+
+.button{
+  display: flex;
+  margin-bottom: 10px;
+}
+
+.option-button{
+  display: flex;
+  align-items: center;
+}
+
+.main-outer{
+  background-color: var(--background-color);
+}
+
