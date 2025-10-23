@@ -26,6 +26,12 @@
   padding: 5px 12px;
 }
 
+.login-btn:hover{
+  background-color: var(--light-color);
+  color:var(--background-color);
+  font-weight: bold;
+}
+
 .logo{
   font-family: "BBH Sans Bogle", sans-serif;
   font-style: normal;
