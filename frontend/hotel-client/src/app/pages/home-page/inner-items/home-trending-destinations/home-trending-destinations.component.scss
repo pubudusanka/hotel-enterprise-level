@@ -1,0 +1,41 @@
+.inner{
+  height:350px;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+
+  h2{
+    color: white;
+    margin: 0;
+  }
+}
+
+.slot-1{
+  background-image: url("https://cf.bstatic.com/xdata/images/city/600x600/685330.jpg?k=ee4ac422e47649d2d04a9759dc81fa51f138f477796a8043557e864517ae6f5f&o=");
+}
+
+.slot-2{
+  background-image: url("https://cf.bstatic.com/xdata/images/city/600x600/685389.jpg?k=b2ee6ea5ea52888fac4782d1c7959f9aa2572f382ff25a06418b53e735c71e80&o=");
+}
+
+.slot-3{
+  background-image: url("https://media.istockphoto.com/id/1457698429/photo/lotus-tower-sri-lanka.jpg?s=612x612&w=0&k=20&c=e-J8rcUWgtqUQc9bjBXKggn63fjOM19_Gt9SAVeUiEw=");
+}
+
+.slot-4{
+  background-image: url("https://meetinsrilanka.com/wp-content/uploads/2024/07/Ella.jpg");
+}
+
+.slot-5{
+  background-image: url("https://media.tacdn.com/media/attractions-splice-spp-674x446/07/be/ac/b8.jpg");
+}
+
+.outer{
+  margin-bottom: 10px;
+}
+
