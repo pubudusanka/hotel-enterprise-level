@@ -149,3 +149,32 @@
 .done:hover{
   background-color: var(--btn-hover);
 }
+
+@media only screen and (max-width: 1200px){
+  .destination{
+    width: 30%;
+  }
+  .visitors{
+    width: 30%;
+  }
+}@media only screen and (max-width: 992px){
+  .destination{
+    width: 100%;
+  }
+  .inner{
+    flex-direction: column;
+  }
+  .separator{
+    height: 5px;
+  }
+  .dates{
+    width: 100%;
+  }
+  .visitors{
+    width: 100%;
+  }
+  .search-button{
+    width: 100%;
+  }
+
+}
