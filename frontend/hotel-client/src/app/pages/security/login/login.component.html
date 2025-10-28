@@ -1,1 +1,48 @@
-<p>login works!</p>
+<div class="main-outer">
+  <form action="">
+    <div class="container">
+      <h3 style="margin-bottom: 20px">Login</h3>
+      <div class="row">
+        <div class="col-12">
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Enter your email</mat-label>
+            <input
+              matInput
+              placeholder="pat@example.com"
+            />
+          </mat-form-field>
+        </div>
+
+        <div class="col-12">
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Enter your password</mat-label>
+            <input
+              type="{{showStatus?'text':'password'}}"
+              matInput
+            />
+          </mat-form-field>
+        </div>
+
+        <div class="col-12" style="text-align: center">
+          <a href="#">Forgot Password</a>
+          <br>
+          <br>
+        </div>
+
+        <div class="col-12" style="text-align: center">
+          {{showStatus}}
+          <mat-checkbox [ngModelOptions]="{standalone:true}" [(ngModel)]="showStatus" class="example-margin">Show Password</mat-checkbox>
+          <br>
+          <br>
+        </div>
+
+        <div class="col-12">
+          <button mat-button="filled" class="login-btn">Access System</button>
+        </div>
+
+
+      </div>
+    </div>
+  </form>
+
+</div>
