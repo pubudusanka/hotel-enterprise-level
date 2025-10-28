@@ -90,3 +90,62 @@
   background-color: var(--btn-color);
 }
 
+.visitor-widget{
+  width: 250px;
+  height: 160px;
+  display: flex;
+  padding: 5px;
+  flex-direction: column;
+}
+
+.widget{
+  height: 30px;
+  border: 1px solid gray;
+  width: 100px;
+  display: flex;
+  border-radius: 5px;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 5px;
+}
+
+.row-element{
+  display: flex;
+  height: 40px;
+  align-items: center;
+  padding: 10px;
+}
+
+
+
+.tool-btn{
+  border: none;
+  background: none;
+  color: var(--background-color);
+  border-radius: 100%;
+  width: 20px;
+  height: 20px;
+}
+
+.tool-btn:hover{
+  background-color: rgba(6,81,221,0.2);
+}
+
+.right-side{
+  flex: 1;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.done{
+  padding: 10px;
+  background-color: var(--btn-color);
+  color: white;
+  border-radius: 10px;
+  border: none;
+
+}
+
+.done:hover{
+  background-color: var(--btn-hover);
+}

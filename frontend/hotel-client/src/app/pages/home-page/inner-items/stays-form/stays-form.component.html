@@ -24,18 +24,45 @@
     </div>
 
     <mat-menu #menu="matMenu">
-      <button mat-menu-item>
-        <mat-icon>dialpad</mat-icon>
-        <span>Redial</span>
-      </button>
-      <button mat-menu-item disabled>
-        <mat-icon>voicemail</mat-icon>
-        <span>Check voice mail</span>
-      </button>
-      <button mat-menu-item>
-        <mat-icon>notifications_off</mat-icon>
-        <span>Disable alerts</span>
-      </button>
+      <div class="visitor-widget">
+        <div class="row-element">
+          <div class="left-side">
+            <span>Adults</span>
+          </div>
+          <div class="right-side">
+            <div class="widget">
+              <button class="min tool-btn">-</button>
+              <span>5</span>
+              <button class="max tool-btn">+</button>
+            </div>
+          </div>
+        </div>
+        <div class="row-element">
+          <div class="left-side">
+            <span>Children</span>
+          </div>
+          <div class="right-side">
+            <div class="widget">
+              <button class="min tool-btn">-</button>
+              <span>4</span>
+              <button class="max tool-btn">+</button>
+            </div>
+          </div>
+        </div>
+        <div class="row-element">
+          <div class="left-side">
+            <span>Rooms</span>
+          </div>
+          <div class="right-side">
+            <div class="widget">
+              <button class="min tool-btn">-</button>
+              <span>5</span>
+              <button class="max tool-btn">+</button>
+            </div>
+          </div>
+        </div>
+        <button class="done">Done</button>
+      </div>
     </mat-menu>
 
     <div class="separator"></div>
