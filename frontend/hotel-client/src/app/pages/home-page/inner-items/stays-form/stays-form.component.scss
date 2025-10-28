@@ -55,7 +55,38 @@
   background-color: var(--light-color);
   padding: 5px;
   border-radius: 5px;
+  justify-content: space-between;
+  cursor: pointer;
+
   mat-icon{
     color: gray;
   }
 }
+
+.search-button{
+  width: 25%;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  background-color: var(--btn-color);
+  border-radius: 5px;
+  justify-content: end;
+  cursor: pointer;
+
+  mat-icon{
+    color: var(--light-color);
+  }
+
+  button{
+    display: flex;
+    justify-content: center;
+    border: none;
+    border-radius: 5px;
+  }
+}
+
+.search-btn{
+  flex: 1;
+  background-color: var(--btn-color);
+}
+
