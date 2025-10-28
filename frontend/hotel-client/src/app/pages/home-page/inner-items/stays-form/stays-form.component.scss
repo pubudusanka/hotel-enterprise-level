@@ -1,7 +1,7 @@
 .inner{
   height: auto;
   min-height: 50px;
-  background-color: var(--orange-color);
+  background-color: var(--lemon-zest);
   padding: 5px;
   display: flex;
 }
@@ -68,7 +68,7 @@
   height: 40px;
   display: flex;
   align-items: center;
-  background-color: var(--btn-color);
+  background-color: var(--lavender-mist);
   border-radius: 5px;
   justify-content: end;
   cursor: pointer;
@@ -87,7 +87,8 @@
 
 .search-btn{
   flex: 1;
-  background-color: var(--btn-color);
+  background-color: var(--lavender-mist);
+  color: white;
 }
 
 .visitor-widget{
