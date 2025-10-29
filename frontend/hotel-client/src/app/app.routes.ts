@@ -6,6 +6,8 @@ import {LoginComponent} from './pages/security/login/login.component';
 import {RegisterComponent} from './pages/security/register/register.component';
 import {RegisterVerificationComponent} from './pages/security/register-verification/register-verification.component';
 import {ForgotPasswordComponent} from './pages/security/forgot-password/forgot-password.component';
+import {ResetPwVerificationComponent} from './pages/security/reset-pw-verification/reset-pw-verification.component';
+import {ResetPwdComponent} from './pages/security/reset-pwd/reset-pwd.component';
 
 export const routes: Routes = [
   {path:'', redirectTo: '/home', pathMatch: 'full'},
@@ -16,7 +18,9 @@ export const routes: Routes = [
       {path:'login', component:LoginComponent},
       {path:'register', component: RegisterComponent},
       {path:'register-verification/:email', component:RegisterVerificationComponent},
+      {path:'reset-pw-verification/:email', component:ResetPwVerificationComponent},
       {path:'forgot-password', component:ForgotPasswordComponent},
+      {path:'reset-pwd', component:ResetPwdComponent}
     ]
   },
   {path:'**', component:NotFoundPageComponent}
