@@ -4,6 +4,7 @@ import {NotFoundPageComponent} from './pages/not-found-page/not-found-page.compo
 import {SecurityContextComponent} from './pages/security/security-context/security-context.component';
 import {LoginComponent} from './pages/security/login/login.component';
 import {RegisterComponent} from './pages/security/register/register.component';
+import {RegisterVerificationComponent} from './pages/security/register-verification/register-verification.component';
 
 export const routes: Routes = [
   {path:'', redirectTo: '/home', pathMatch: 'full'},
@@ -12,7 +13,8 @@ export const routes: Routes = [
     path:'security', component:SecurityContextComponent,children: [
       {path:'', redirectTo: '/security/login', pathMatch: 'full'},
       {path:'login', component:LoginComponent},
-      {path:'register', component: RegisterComponent}
+      {path:'register', component: RegisterComponent},
+      {path:'register-verification/:email', component:RegisterVerificationComponent}
     ]
   },
   {path:'**', component:NotFoundPageComponent}
