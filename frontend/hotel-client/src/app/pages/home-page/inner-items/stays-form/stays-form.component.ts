@@ -8,7 +8,6 @@ import {MatMenu, MatMenuItem, MatMenuTrigger} from '@angular/material/menu';
   imports: [
     MatIcon,
     MatMenu,
-    MatMenuItem,
     MatMenuTrigger,
   ],
   providers: [provideNativeDateAdapter()],

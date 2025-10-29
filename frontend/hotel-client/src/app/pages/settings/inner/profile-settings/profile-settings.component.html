@@ -1,0 +1,46 @@
+<div class="main-outer">
+  <form action="">
+    <div class="container">
+      <h5 style="margin-bottom: 20px">Change Profile Details</h5>
+      <div class="row">
+        <div class="col-12 col-sm-6">
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Enter your first name</mat-label>
+            <input
+              matInput
+              type="text"
+              placeholder="Saman"
+            />
+          </mat-form-field>
+        </div>
+
+        <div class="col-12 col-sm-6">
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Enter your last name</mat-label>
+            <input
+              matInput
+              type="text"
+              placeholder="Bandara"
+            />
+          </mat-form-field>
+        </div>
+
+
+
+        <div class="col-12">
+          <button mat-button="filled" class="login-btn btn" routerLink="/">Change Settings</button>
+        </div>
+        <div class="col-12">
+          <hr>
+          <h5>Change Profile Picture</h5>
+        </div>
+        <div class="col-12">
+          <app-manage-profile-pic/>
+        </div>
+
+
+      </div>
+    </div>
+  </form>
+
+</div>

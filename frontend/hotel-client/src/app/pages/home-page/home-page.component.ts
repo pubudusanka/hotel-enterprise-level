@@ -10,7 +10,6 @@ import {
 @Component({
   selector: 'app-home-page',
   imports: [
-    MainHeaderComponent,
     OptionsBarComponent,
     StateContextComponent,
     AppOffersComponent,

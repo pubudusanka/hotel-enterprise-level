@@ -10,13 +10,12 @@ import {ActivatedRoute, RouterLink} from '@angular/router';
   imports: [
     FormsModule,
     MatButton,
-    MatCheckbox,
     MatFormField,
     MatInput,
     MatLabel,
     ReactiveFormsModule,
     RouterLink,
-    MatFormField
+    MatFormField,
   ],
   templateUrl: './register-verification.component.html',
   styleUrl: './register-verification.component.scss',
