@@ -518,9 +518,8 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ## 📞 Support
 
 For support and questions:
-- Email: support@hotelmanagement.com
-- Documentation: [Wiki](https://github.com/your-username/hotel-management-enterprise-level/wiki)
-- Issues: [GitHub Issues](https://github.com/your-username/hotel-management-enterprise-level/issues)
+- **GitHub**: [pubudusanka](https://github.com/pubudusanka)
+- **Email**: pubudusanka79@gmail.com
 
 ## 🙏 Acknowledgments
 
@@ -531,5 +530,3 @@ For support and questions:
 - AWS for cloud storage solutions
 
 ---
-
-**Happy Coding! 🚀**
