@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import {MatButton} from '@angular/material/button';
-import {MatFormField, MatInput} from '@angular/material/input';
+import {MatFormField, MatInput, MatLabel} from '@angular/material/input';
 import {RouterLink} from '@angular/router';
 import {MatCheckbox} from '@angular/material/checkbox';
 import {FormsModule} from '@angular/forms';
@@ -14,7 +14,8 @@ import {FormsModule} from '@angular/forms';
     RouterLink,
     MatFormField,
     MatCheckbox,
-    FormsModule
+    FormsModule,
+    MatLabel
   ],
   templateUrl: './reset-pwd.component.html',
   styleUrl: './reset-pwd.component.scss',
