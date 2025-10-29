@@ -3,6 +3,7 @@ import {HomePageComponent} from './pages/home-page/home-page.component';
 import {NotFoundPageComponent} from './pages/not-found-page/not-found-page.component';
 import {SecurityContextComponent} from './pages/security/security-context/security-context.component';
 import {LoginComponent} from './pages/security/login/login.component';
+import {RegisterComponent} from './pages/security/register/register.component';
 
 export const routes: Routes = [
   {path:'', redirectTo: '/home', pathMatch: 'full'},
@@ -11,6 +12,7 @@ export const routes: Routes = [
     path:'security', component:SecurityContextComponent,children: [
       {path:'', redirectTo: '/security/login', pathMatch: 'full'},
       {path:'login', component:LoginComponent},
+      {path:'register', component: RegisterComponent}
     ]
   },
   {path:'**', component:NotFoundPageComponent}
