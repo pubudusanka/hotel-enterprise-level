@@ -1,15 +1,54 @@
-<div class="upload-area" id="uploadArea">
-  <div class="upload-icon">
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-      <path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM14 13v4h-4v-4H7l5-5 5 5h-3z"/>
-    </svg>
+<div class="container">
+  <div class="header">
+    <h1>Upload Avatar</h1>
+    <p>Upload your image file to continue with the new profile pic.</p>
   </div>
-  <div class="upload-text">Drag and drop file here</div>
-  <div class="upload-hint">or</div>
-  <button class="upload-button">
-    Browse file
-  </button>
-<!--  <input type="file" id="fileInput" multiple>-->
-</div>
 
-<!--<div class="file-list" id="fileList"></div>-->
+  <div class="upload-section" id="uploadSection">
+    <div class="upload-icon">
+      <svg viewBox="0 0 24 24">
+        <path d="M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M18,20H6V4H13V9H18V20Z"/>
+      </svg>
+    </div>
+    <div class="upload-text">
+      <h3>Drag your file file here</h3>
+      <p>or click to browse your computer</p>
+    </div>
+    <button class="upload-button" onclick="document.getElementById('fileInput').click()">
+      Choose File
+    </button>
+    <input type="file" id="fileInput" class="file-input" accept=".apk,.aab">
+  </div>
+
+  <div class="selected-file" id="selectedFile">
+    <div class="file-info">
+      <div class="file-icon">
+        <svg viewBox="0 0 24 24">
+          <path d="M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M18,20H6V4H13V9H18V20Z"/>
+        </svg>
+      </div>
+      <div class="file-details">
+        <div class="file-name" id="fileName"></div>
+        <div class="file-size" id="fileSize"></div>
+      </div>
+      <button class="remove-file">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z"/>
+        </svg>
+      </button>
+    </div>
+    <div class="progress-bar">
+      <div class="progress-fill" id="progressFill"></div>
+    </div>
+  </div>
+
+  <div class="file-requirements">
+    <h4>File requirements:</h4>
+    <ul class="requirements-list">
+      <li>JPG,... etc files only</li>
+      <li>Maximum file size: 5MB for Files</li>
+      <li>Target File level must meet current requirements</li>
+      <li>File format recommended for new uploads</li>
+    </ul>
+  </div>
+</div>

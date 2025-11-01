@@ -9,6 +9,7 @@ import {ForgotPasswordComponent} from './pages/security/forgot-password/forgot-p
 import {ResetPwVerificationComponent} from './pages/security/reset-pw-verification/reset-pw-verification.component';
 import {ResetPwdComponent} from './pages/security/reset-pwd/reset-pwd.component';
 import {SettingsComponent} from './pages/settings/settings.component';
+import {SearchResultComponent} from './pages/search-result/search-result.component';
 
 export const routes: Routes = [
   {path:'', redirectTo: '/home', pathMatch: 'full'},
@@ -25,5 +26,6 @@ export const routes: Routes = [
     ]
   },
   {path:'setting', component:SettingsComponent},
+  {path:'search',component:SearchResultComponent},
   {path:'**', component:NotFoundPageComponent}
 ];

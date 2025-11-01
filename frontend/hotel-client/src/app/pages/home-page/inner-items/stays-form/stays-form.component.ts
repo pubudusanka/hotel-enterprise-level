@@ -2,6 +2,7 @@ import {ChangeDetectionStrategy, Component} from '@angular/core';
 import {MatIcon} from '@angular/material/icon';
 import {provideNativeDateAdapter} from '@angular/material/core';
 import {MatMenu, MatMenuItem, MatMenuTrigger} from '@angular/material/menu';
+import {RouterLink} from '@angular/router';
 
 @Component({
   selector: 'app-stays-form',
@@ -9,6 +10,7 @@ import {MatMenu, MatMenuItem, MatMenuTrigger} from '@angular/material/menu';
     MatIcon,
     MatMenu,
     MatMenuTrigger,
+    RouterLink,
   ],
   providers: [provideNativeDateAdapter()],
   changeDetection: ChangeDetectionStrategy.OnPush,
