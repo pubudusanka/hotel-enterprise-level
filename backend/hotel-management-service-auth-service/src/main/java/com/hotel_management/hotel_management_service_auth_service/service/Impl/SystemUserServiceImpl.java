@@ -43,6 +43,15 @@ public class SystemUserServiceImpl implements SystemUserService {
     @Value("${keycloak.config.realm}")
     private String realm;
 
+    @Value("${keycloak.config.client-id}")
+    private String clientId;
+
+    @Value("${keycloak.config.secret}")
+    private String clientSecret;
+
+    @Value("${spring.security.oauth2.resourceserver.jwt.issuer-uri}")
+    private String api_uri;
+
     private final SystemUserRepository systemUserRepository;
     private final KeycloakSecurityUtil keycloakSecurityUtil;
     private final OtpRepository otpRepository;
@@ -464,16 +473,16 @@ public class SystemUserServiceImpl implements SystemUserService {
         }
 
         MultiValueMap<String,String> requestBody = new LinkedMultiValueMap<>();
-        requestBody.add("client_id", "");
+        requestBody.add("client_id", clientId);
         requestBody.add("grant_type", OAuth2Constants.PASSWORD);
         requestBody.add("username", data.getEmail());
-        requestBody.add("client_secret", "");
+        requestBody.add("client_secret", clientSecret);
         requestBody.add("password", data.getPassword());
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
         RestTemplate restTemplate = new RestTemplate();
-        ResponseEntity<Object> response = restTemplate.postForEntity("keycloak api url", requestBody, Object.class);
+        ResponseEntity<Object> response = restTemplate.postForEntity(api_uri, requestBody, Object.class);
         return response.getBody();
     }
 
